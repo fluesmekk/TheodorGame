@@ -14,18 +14,24 @@ namespace TheodorGame
         public int HP { get; set; }
         public int maxHP { get; set; }
         public int Mana { get; set; }
+        public double Damage { get; set; }
         public int RevivesLeft { get; set; }
         public List<Item> Inventory { get; set; }
 
-        public Player(string name)
-        {
-            Name = name;
+        public Player()
+        { 
             Level = 1;
             HP = 100;
             maxHP = 100;
             Mana = 100;
+            Damage = 1.0;
             Inventory = new List<Item>();
             RevivesLeft = 10;
+        }
+
+        public void SetName(string name)
+        {
+            Name = name;
         }
 
         public void Grab(Item item)
@@ -72,15 +78,16 @@ namespace TheodorGame
 
         public void ShowStats()
         {
-            var text = $"Name: {Name}\nLevel: {Level}\nHP: {HP}\nMana: {Mana}\nRevives: {RevivesLeft}";
+            var text = $"Name: {Name}\nLevel: {Level}\nHP: {HP}\nDamage Multiplier: {Damage}\nMana: {Mana}\nRevives: {RevivesLeft}";
             Console.WriteLine(text);
         }
 
         public void LevelUp()
         {
             Level++;
-            maxHP = (int)((double)HP * 1.1);
+            maxHP = (int)((double)maxHP * 1.1);
             Mana = (int)((double)Mana * 1.1);
+            Damage += 0.1;
         }
 
         public void Fight(bool game, Random r, Monster monster)
@@ -95,9 +102,9 @@ namespace TheodorGame
 
         private bool CalculateFight(bool game, Random r, Monster monster, ref int monsterHP)
         {
-            var dmg1 = r.Next(0, 30);
-            var dmg2 = r.Next(0, 30);
-            monsterHP -= dmg2;
+            var dmg1 = r.Next(0, 30) * monster.Damage;
+            var dmg2 = r.Next(0, 30) * Damage;
+            monsterHP -= (int)dmg2;
             DisplayAttack("Monster", "Player", monsterHP);
             if (monsterHP <= 0)
             {
@@ -107,7 +114,7 @@ namespace TheodorGame
                 ShowStats();
                 return true;
             }
-            HP -= dmg1;
+            HP -= (int)dmg1;
             DisplayAttack("Player", "Monster", HP);
             if (HP <= 0)
             {
