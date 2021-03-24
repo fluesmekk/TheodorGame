@@ -10,11 +10,11 @@ namespace TheodorGame
     {
         public Player Player { get; set; }
         public Monsters Monsters { get; set; }
-        public Item Items { get; set; }
+        public Items Items { get; set; }
 
         public Random r = new Random();
 
-        private string Item { get; set; }
+        private Item Item { get; set; }
 
         private Monster Monster { get; set; }
 
@@ -24,7 +24,7 @@ namespace TheodorGame
         public bool GameFinished { get; set; }
     
 
-        public Game(Player player, Monsters monsters, Item items)
+        public Game(Player player, Monsters monsters, Items items)
         {
             Player = player;
             Monsters = monsters;
@@ -35,9 +35,30 @@ namespace TheodorGame
         public void GameCommands(string command)
         {
             if (command=="Stats") Player.ShowStats();
-            if (command.Contains("Look for items")) LookForItem();
+            if (command=="Look for items") LookForItem();
             if (command=="Look for monster") LookForMonster();
             if (command=="X") EndGame();
+            if (command=="Open inventory") Player.ShowInventory();
+            if (command.Contains("Use")) FindItemToUse(command);
+        }
+
+        private void FindItemToUse(string command)
+        {
+            var split = command.Split(" ");
+            var item = split[1];
+            Console.WriteLine(item);
+            for(var i = 0; i < Player.Inventory.Count; i++)
+            {
+                var item1 = Player.Inventory[i];
+                if (item1.Name == item)
+                {
+                    Player.Use(item1);
+                }
+                else
+                {
+                    Console.WriteLine($"Couldn't find item with name{item}");
+                }
+            }
         }
 
         public void LookForItem()
@@ -49,29 +70,29 @@ namespace TheodorGame
 
         }
 
-        private void ShowItemOptions(string item)
+        private void ShowItemOptions(Item item)
         {
-            Console.WriteLine($"Do you want to pick the {item} up? {YorN}");
+            Console.WriteLine($"Do you want to pick the {item.Name} up? {YorN}");
             var command = Console.ReadLine();
             if (command == "Yes") PickUp(item);
             else LeaveItem(item);
         }
 
-        private void LeaveItem(string item)
+        private void LeaveItem(Item item)
         {
             Console.WriteLine($"You've left the {item}");
         }
 
-        private void PickUp(string item)
+        private void PickUp(Item item)
         {
             Player.Grab(item);
-            Console.WriteLine($"You picked up the {item}");
+            Console.WriteLine($"You picked up the {item.Name}");
             Items.AllItems.Remove(item);
         }
 
-        private void ReturnFoundItem(string Item)
+        private void ReturnFoundItem(Item Item)
         {
-            Console.WriteLine($"Found item {Item}");
+            Console.WriteLine($"Found item {Item.Name}");
         }
 
         public void LookForMonster()

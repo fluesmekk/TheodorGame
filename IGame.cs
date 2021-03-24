@@ -10,7 +10,7 @@ namespace TheodorGame
     {
         Player Player { get; set; }
         Monster Monsters { get; set; }
-        Item Items { get; set; }
+        Items Items { get; set; }
 
         public bool GameFinished { get; set; }
     

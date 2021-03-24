@@ -8,11 +8,15 @@ namespace TheodorGame
 {
     class Item
     {
-        public List<string> AllItems { get; set; }
+        public string Name;
+        public int Val;
+        public string Type;
 
-        public Item(params string[] items)
+        public Item(string name, int val, string type)
         {
-            AllItems = new List<string>(items);
+            Name = name;
+            Val = val;
+            Type = type;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace TheodorGame
         {
             var Player = new Player("xx123xx");
             var Monsters = new Monsters(new Monster("Wolf", 3, 130), new Monster("Drake", 10, 150), new Monster("Fish", 1, 70));
-            var Items = new Item("Knife", "Spade", "Shield");
+            var Items = new Items(new Item("Healthpotion", 50, "Potion"),new Item("SuperPotion", 50, "SuperPotion") );
             var _Game = new Game(Player, Monsters, Items);
             
             _Game.Player.ShowStats();
