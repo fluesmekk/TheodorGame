@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace TheodorGame
 {
-    class Game : IGame
+    class Game
     {
         public Player Player { get; set; }
-        public Monster Monsters { get; set; }
+        public Monsters Monsters { get; set; }
         public Item Items { get; set; }
 
         public Random r = new Random();
 
         private string Item { get; set; }
 
-        private string Monster { get; set; }
+        private Monster Monster { get; set; }
 
         public string HelpCommands = "What do you want to do?:\n Look for item\nLook for monster";
 
@@ -24,7 +24,7 @@ namespace TheodorGame
         public bool GameFinished { get; set; }
     
 
-        public Game(Player player, Monster monsters, Item items)
+        public Game(Player player, Monsters monsters, Item items)
         {
             Player = player;
             Monsters = monsters;
@@ -82,33 +82,22 @@ namespace TheodorGame
             ShowMonsterOptions(Monster);
         }
 
-        private void ShowMonsterOptions(string monster)
+        private void ShowMonsterOptions(Monster monster)
         {
             Console.WriteLine($"Do you want to fight the {monster}? {YorN}");
             var command = Console.ReadLine();
-            if (command == "Yes") FightMonster(monster, Player);
+            if (command == "Yes") Player.Fight(GameFinished, r, monster);
+            else EscapeMonster(monster);
         }
 
-        private void FightMonster(string monster, Player Player)
+        private void EscapeMonster(Monster monster)
         {
-            var random = r.Next(0, 1);
-            if (random == 1) PlayerWins(monster, Player);
-            else MonsterWins(monster, Player);
+            Console.WriteLine($"You escaped the {monster.Name}.");
         }
 
-        private void MonsterWins(string monster, Player player)
+        private void ReturnFoundMonster(Monster Monster)
         {
-            Console.WriteLine($"{player.Name} loses but manages to escape with {player.HP} from {monster}");
-        }
-
-        private void PlayerWins(string monster, Player player)
-        {
-            Console.WriteLine($"{player.Name} wins over {monster}");
-        }
-
-        private void ReturnFoundMonster(string Monster)
-        {
-            Console.WriteLine($"Found monster {Monster}");
+            Console.WriteLine($"Found monster {Monster.Name}");
         }
 
         public void EndGame()

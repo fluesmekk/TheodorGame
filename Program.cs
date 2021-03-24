@@ -8,7 +8,7 @@ namespace TheodorGame
         static void Main(string[] args)
         {
             var Player = new Player("xx123xx");
-            var Monsters = new Monster("Wolf", "Drake", "Fish");
+            var Monsters = new Monsters(new Monster("Wolf", 3, 130), new Monster("Drake", 10, 150), new Monster("Fish", 1, 70));
             var Items = new Item("Knife", "Spade", "Shield");
             var _Game = new Game(Player, Monsters, Items);
             

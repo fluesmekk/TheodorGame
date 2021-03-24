@@ -8,11 +8,15 @@ namespace TheodorGame
 {
     class Monster
     {
-        public List<string> AllMonsters { get; set; }
+        public string Name { get; set; }
+        public int Level { get; set; }
+        public int HP { get; set; }
 
-        public Monster(params string[] Monstere)
+        public Monster(string name, int level, int hp)
         {
-            AllMonsters = new List<string>(Monstere);
+            Name = name;
+            Level = level;
+            HP = hp;
         }
     }
 }
